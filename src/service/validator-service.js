@@ -1,7 +1,5 @@
 'use strict';
 
-const user = require('../repositorios/users-repositorio');
-
 let errors = [];
 
 function ValidationContract() {
