@@ -1,5 +1,7 @@
 'use strict';
 
+const repository = require('../repositorios/users-repositorio')
+
 let errors = [];
 
 function ValidationContract() {
@@ -35,6 +37,14 @@ ValidationContract.prototype.isEmail = (value, message) => {
     var reg = new RegExp(/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/);
     if (!reg.test(value))
         errors.push({ message: message });
+}
+
+// verifica se o email ja existe
+ValidationContract.prototype.exists = async (email, message) => {
+    const valid = await repository.getByEmail(email)
+        if (valid) {
+            errors.push({ message: message });
+        }
 }
 
 ValidationContract.prototype.errors = () => { 
