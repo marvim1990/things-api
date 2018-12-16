@@ -39,7 +39,7 @@ exports.getByNome = async(name) => {
         .find({
             name: name,
             availability: true
-        }, 'name timeCust itensImage location');
+        }, 'name timeCust itensImages location');
     return res;
 }
 
