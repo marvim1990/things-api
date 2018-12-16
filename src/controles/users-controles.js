@@ -164,7 +164,7 @@ exports.refreshToken = async(req, res, next) => {
 
         if (!user) {
             res.status(404).send ({
-                message: 'Cliente não encontrado'
+                message: 'usuario não encontrado'
             });
             return;
         }

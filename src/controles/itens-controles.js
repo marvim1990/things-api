@@ -19,7 +19,7 @@ const regex = /^data:([A-Za-z-+\/]+);base64,(.+)$/;
 exports.post = async(req, res, next) => {
     let contract = new ValidationContract();
     contract.isRequired(req.body.name, 'O campo nome e necessario para prosseguir');
-    contract.hasMaxLen(req.body.name, 15, 'O campo nome tem um numero maximo de 15 caracteres');
+    contract.hasMaxLen(req.body.name, 30, 'O campo nome tem um numero maximo de 30 caracteres');
     contract.hasMinLen(req.body.description, 5, 'O campo de descrição tem um tamanho minimo de 5 caracteres');
     contract.hasMaxLen(req.body.description, 30, 'O campo de descrição tem um tamanho máximo de 30 caracteres');
     if (!contract.isValid()) {
