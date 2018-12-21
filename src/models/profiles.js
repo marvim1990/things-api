@@ -5,7 +5,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
-    name: {
+    first_name: {
+        type: String,
+        required: true
+    },
+    second_name: {
         type: String,
         required: true
     },

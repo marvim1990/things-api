@@ -23,6 +23,6 @@ router.post('/',authService.authorize, controler.post);
 router.put('/:id', controler.put);
 
 //metodo de delete
-router.delete('/',authService.authorize, controler.remove);
+router.delete('/:id',authService.authorize, controler.remove);
 
 module.exports = router;

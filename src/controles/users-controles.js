@@ -21,7 +21,8 @@ const regex = /^data:([A-Za-z-+\/]+);base64,(.+)$/;
 exports.post = async(req, res, next) => {
     // validação dos campos
     let contract = new ValidationContract();
-    contract.hasMinLen(req.body.name, 3, 'O campo nome precisa ter no mínimo 3 caracteres');
+    contract.hasMinLen(req.body.first_name, 3, 'O campo nome precisa ter no mínimo 3 caracteres');
+    contract.hasMinLen(req.body.second_name, 3, 'O campo nome precisa ter no mínimo 3 caracteres');
     contract.isEmail(req.body.email, 'Digite um email valido');
     await contract.exists(req.body.email, 'Este email ja esta em uso');
     contract.hasMinLen(req.body.password, 8, "A senha deve ter no mínimo 8 caracteres");
@@ -31,7 +32,8 @@ exports.post = async(req, res, next) => {
     }
     try {        
         await repository.create({
-            name: req.body.name,
+            first_name: req.body.first_name,
+            second_name: req.body.second_name,
             email: req.body.email,
             password: md5(req.body.password + global.Uni_KEY),
             profilePicture: 'https://thingstorage.blob.core.windows.net/profile-pictures/user-out.png',
@@ -44,21 +46,23 @@ exports.post = async(req, res, next) => {
         const token = await autentification.generateToken({
             id: user._id,
             email: user.email,
-            name: user.name,
+            first_name: user.first_name,
             roles: user.roles
         });
         emailService.send(
             req.body.email, 
             'Bem Vindo ao Things!', 
-            global.EMAIL_TMPL.replace('{0}', req.body.name)
+            global.EMAIL_TMPL.replace('{0}', req.body.first_name)
         );
         res.status(201).send({
+            status: 'OK',
             message: 'Cadastro realizado com sucesso',
             token: token
         });
     } catch (e) {
         console.log(e);
         res.status(500).send({
+            status: 'Erro',
             message: 'Erro ao cadastrar'
         });
     }
@@ -89,15 +93,18 @@ exports.put = async(req, res, next) => {
         });
 
         await repository.update(req.params.id, {
-            name: req.body.name,
+            first_name: req.body.first_name,
+            second_name: req.body.second_name,
             profilePicture: 'https://thingstorage.blob.core.windows.net/profile-pictures/' + picName
         });
         res.status(201).send({
+            status: 'OK',
             message: 'Atualização realizada'
         })
     } catch (e) {
         console.log(e);
         res.status(500).send({
+            status: 'Erro',
             message: 'Erro na atualização'
         });
     }
@@ -108,11 +115,13 @@ exports.remove = async(req, res, next) => {
     try {
         await repository.delete(req.body.id);
         res.status(201).send({
+            status: 'OK',
             message: 'Perfil excluido'
         })
     } catch (e) {
         console.log(e);
         res.status(500).send({
+            status: 'Erro',
             message: 'Erro na exclusão'
         })
     }
@@ -128,6 +137,7 @@ exports.authenticate = async(req, res, next) => {
 
         if (!user) {
             res.status(404).send ({
+                status: 'OK',
                 message: 'Usuário e/ou senha inválidos'
             });
             return;
@@ -136,7 +146,7 @@ exports.authenticate = async(req, res, next) => {
         const token = await autentification.generateToken({
             id: user._id,
             email: user.email,
-            name: user.name,
+            first_name: user.first_name,
             roles: user.roles
         });
 
@@ -144,11 +154,12 @@ exports.authenticate = async(req, res, next) => {
             token: token,
             data : {
                 email: user.email,
-                name : user.name
+                first_name : user.first_name
             }
         });
     } catch (e) {
         res.status(500).send({
+            status: 'Erro',
             message: 'Falha ao processar sua requisição'
         });
     }
@@ -164,6 +175,7 @@ exports.refreshToken = async(req, res, next) => {
 
         if (!user) {
             res.status(404).send ({
+                status: 'OK',
                 message: 'usuario não encontrado'
             });
             return;
@@ -172,7 +184,7 @@ exports.refreshToken = async(req, res, next) => {
         const tokenData = await autentification.generateToken({
             id: user._id,
             email: user.email,
-            name: user.name,
+            first_name: user.first_name,
             roles: user.roles
         });
 
@@ -180,12 +192,13 @@ exports.refreshToken = async(req, res, next) => {
             token: tokenData,
             data : {
                 email: user.email,
-                name : user.name
+                first_name : user.first_name
             }
         });
     } catch (e) {
         console.log(e);
         res.status(500).send({
+            status: 'Erro',
             message: 'Falha ao processar sua requisição'
         });
     }

@@ -62,11 +62,13 @@ exports.post = async(req, res, next) => {
             owner: data.id
         });
         res.status(201).send({
+            status: 'OK',
             message: 'Item cadastrado'
         });
     } catch (e) {
         console.log(e);
         res.status(500).send({
+            status: 'Erro',
             message: 'Erro ao cadastrar'
         });
     }
@@ -81,16 +83,19 @@ exports.put = async(req, res, next) => {
         if (data.id == i.owner) {
             await repository.update(req.params.id, req.body);
             res.status(201).send({
+                status: 'OK',
                 message: 'Item atualizado'
             })
         } else {
             res.status(403).send({
+                status: 'OK',
                 message: 'Você não pode atualizar esses dados'
             })
         }
     } catch (e) {
         console.log(e);
         res.status(500).send({
+            status: 'Erro',
             message: 'Erro na atualização'
         });
     }
@@ -99,13 +104,25 @@ exports.put = async(req, res, next) => {
 // Delete
 exports.remove = async(req, res, next) => {
     try {
-        await repository.delete(req.body.id);
-        res.status(201).send({
-            message: 'Item excluido'
-        })
+        const token = req.body.token || req.query.token || req.headers['access-token'];
+        const data = await auth.decodeToken(token);
+        const i = await repository.getById(req.params.id);
+        if (data.id == i.owner) {
+            await repository.delete(req.params.id);
+            res.status(201).send({
+                status: 'OK',
+                message: 'Item excluido'
+            })
+        } else {
+            res.status(403).send({
+                status: 'OK',
+                message: 'Você não pode excluir esse Item'
+            })
+        }
     } catch (e) {
         console.log(e);
         res.status(500).send({
+            status: 'Erro',
             message: 'Erro na exclusão'
         })
     }
@@ -115,10 +132,11 @@ exports.remove = async(req, res, next) => {
 exports.get = async(req, res, next) => {
     try {
         var data = await repository.get();
-        res.status(200).send(data);
+        res.status(200).send({status: 'OK', data});
     } catch (e) {
         console.log(e);
         res.status(500).send({
+            status: 'Erro',
             message: 'Falha ao processar sua requisição'
         });
     }
@@ -128,10 +146,11 @@ exports.get = async(req, res, next) => {
 exports.getByName = async(req, res, next) => {
     try {
         var data = await repository.getByNome(req.params.name);
-        res.status(200).send(data);
+        res.status(200).send({status: 'OK', data});
     } catch (e) {
         console.log(e);
         res.status(500).send({
+            status: 'Erro',
             message: 'Item não encontrado'
         });
     }
@@ -140,10 +159,11 @@ exports.getByName = async(req, res, next) => {
 exports.getByID = async(req, res, next) => {
     try {
         var data = await repository.getById(req.params.id);
-        res.status(200).send(data);
+        res.status(200).send({status: 'OK', data});
     } catch (e) {
         console.log(e);
         res.status(500).send({
+            status: 'Erro',
             message: 'Falha ao processar sua requisição'
         });
     }

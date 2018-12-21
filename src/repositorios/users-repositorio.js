@@ -14,7 +14,8 @@ exports.create = async(data) => {
 exports.update = async(id, data) => {
     await Profiles.findByIdAndUpdate(id, {
         $set: {
-            name: data.name,
+            first_name: data.first_name,
+            second_name: data.second_name,
             profilePicture: data.profilePicture,
         }
     });
