@@ -71,36 +71,45 @@ exports.post = async(req, res, next) => {
 // Put
 exports.put = async(req, res, next) => {
     try {
-        // update da imagem de perfil
-        let picName = guid.raw().toString() + '.jpg';
-        let pic = req.body.profilePicture;
-        let matches = pic.match(regex);
-        let type = matches[1];
-        let buffer = new Buffer(matches[2], 'base64');
+        const token = req.body.token || req.query.token || req.headers['access-token'];
+        const data = await auth.decodeToken(token);
+        if (data.id == req.params.id) {
+            // update da imagem de perfil
+            let picName = guid.raw().toString() + '.jpg';
+            let pic = req.body.profilePicture;
+            let matches = pic.match(regex);
+            let type = matches[1];
+            let buffer = new Buffer(matches[2], 'base64');
 
-        //azure-storage
-        const azureSrv = azure.createBlobService(config.connectionAzure);
-        //upload da foto
-        await azureSrv.createBlockBlobFromText('profile-pictures', picName , buffer, { 
-            contentType: type
-        },function (error, result, response) {
-            if (error) {
-                picName = 'default-product.png';
-                console.log(error);
-            } else {
-                console.log(result);
-            }
-        });
+            //azure-storage
+            const azureSrv = azure.createBlobService(config.connectionAzure);
+            //upload da foto
+            await azureSrv.createBlockBlobFromText('profile-pictures', picName , buffer, { 
+                contentType: type
+            },function (error, result, response) {
+                if (error) {
+                    picName = 'default-product.png';
+                    console.log(error);
+                } else {
+                    console.log(result);
+                }
+            });
 
-        await repository.update(req.params.id, {
-            first_name: req.body.first_name,
-            second_name: req.body.second_name,
-            profilePicture: 'https://thingstorage.blob.core.windows.net/profile-pictures/' + picName
-        });
-        res.status(201).send({
+            await repository.update(req.params.id, {
+                first_name: req.body.first_name,
+                second_name: req.body.second_name,
+                profilePicture: 'https://thingstorage.blob.core.windows.net/profile-pictures/' + picName
+            });
+            res.status(201).send({
+                status: 'OK',
+                message: 'Atualização realizada'
+            })
+    } else {
+        res.status(500).send({
             status: 'OK',
-            message: 'Atualização realizada'
-        })
+            message: 'Não autorizado'
+        });
+    }
     } catch (e) {
         console.log(e);
         res.status(500).send({
