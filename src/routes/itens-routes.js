@@ -20,7 +20,7 @@ router.get('/name/:name', controler.getByName);
 router.post('/',authService.authorize, controler.post);
 
 //metodo de put 
-router.put('/:id', controler.put);
+router.put('/:id', authService.authorize, controler.put);
 
 //metodo de delete
 router.delete('/:id',authService.authorize, controler.remove);
