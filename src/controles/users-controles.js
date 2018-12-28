@@ -159,13 +159,14 @@ exports.authenticate = async(req, res, next) => {
             roles: user.roles
         });
 
-        res.status(201).send({
+        res.status(201).send([{
+            status: 'OK',
             token: token,
             data : {
                 email: user.email,
                 first_name : user.first_name
             }
-        });
+        }]);
     } catch (e) {
         res.status(500).send({
             status: 'Erro',
@@ -198,6 +199,7 @@ exports.refreshToken = async(req, res, next) => {
         });
 
         res.status(201).send({
+            status: 'OK',
             token: tokenData,
             data : {
                 email: user.email,
