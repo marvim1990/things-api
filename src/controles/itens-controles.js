@@ -58,7 +58,8 @@ exports.post = async(req, res, next) => {
             timeCust: req.body.timeCust,
             itensImages: 'https://thingstorage.blob.core.windows.net/itens-pictures/' + picName,
             description: req.body.description,
-            location: req.body.location,
+            latitude: req.body.latitude,
+            longitude: req.body.longitude,
             owner: data.id
         });
         res.status(201).send({
@@ -134,7 +135,9 @@ exports.get = async(req, res, next) => {
         var data = await repository.get();
         res.status(200).send({
             status: 'OK', 
-            data: data
+            itens : {
+                data
+            }
         });
     } catch (e) {
         console.log(e);

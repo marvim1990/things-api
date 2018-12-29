@@ -27,10 +27,14 @@ const schema = new Schema({
         type: String,
         required: true
     },
-    location: [{
+    latitude: {
         type: String,
         require: false
-    }],
+    },
+    longitude: {
+        type: String,
+        require: false
+    },
     owner: {
         type: moongose.Schema.Types.ObjectId,
         ref: 'Profiles'
