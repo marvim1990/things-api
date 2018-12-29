@@ -133,12 +133,7 @@ exports.remove = async(req, res, next) => {
 exports.get = async(req, res, next) => {
     try {
         var data = await repository.get();
-        res.status(200).send({
-            status: 'OK', 
-            itens : {
-                data
-            }
-        });
+        res.status(200).send(data);
     } catch (e) {
         console.log(e);
         res.status(500).send({
