@@ -26,6 +26,7 @@ exports.delete = async(id) => {
     await Profiles.findOneAndRemove(id);
 }
 
+// get user by id
 exports.getByID = async(id) => {
     const res = await Profiles.findById(id);
     return res;

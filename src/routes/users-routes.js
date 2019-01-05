@@ -24,4 +24,7 @@ router.post('/authenticate', userControlers.authenticate);
 //novo token
 router.post('/refresh-token', authService.authorize, userControlers.refreshToken);
 
+// recupera as informações do user
+router.get('/', authService.authorize, userControlers.getUser);
+
 module.exports = router;

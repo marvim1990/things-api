@@ -206,3 +206,21 @@ exports.refreshToken = async(req, res, next) => {
         });
     }
 }
+
+exports.getUser = async (req, res, next) => {
+    try {
+        const token = req.body.token || req.query.token || req.headers['access-token'];
+        const data = await autentification.decodeToken(token);
+        const user = await repository.getByID(data.id);
+        res.status(201).send({
+            status: 'OK',
+            data: user
+        })
+    } catch (e) {
+        console.log(e);
+        res.status(500).send({
+            status: 'Erro',
+            message: 'Falha ao processar sua requisição'
+        })
+    }
+}
