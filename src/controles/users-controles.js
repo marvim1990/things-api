@@ -212,10 +212,9 @@ exports.getUser = async (req, res, next) => {
         const token = req.body.token || req.query.token || req.headers['access-token'];
         const data = await autentification.decodeToken(token);
         const user = await repository.getByID(data.id);
-        res.status(201).send({
-            status: 'OK',
-            data: user
-        })
+        res.status(201).send(
+            user 
+        )
     } catch (e) {
         console.log(e);
         res.status(500).send({
