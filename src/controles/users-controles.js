@@ -158,7 +158,7 @@ exports.authenticate = async(req, res, next) => {
             first_name: user.first_name,
             roles: user.roles
         });
-
+        // removi as [ ] do data
         res.status(201).send({
             status: 'OK',
             token: token,
