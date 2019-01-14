@@ -162,12 +162,12 @@ exports.authenticate = async(req, res, next) => {
         res.status(201).send({
             status: 'OK',
             token: token,
-            data : [{
+            data : {
                 first_name: user.first_name,
                 second_name: user.second_name,
                 email: user.email,
                 profilePicture: user.profilePicture
-            }]
+            }
         });
     } catch (e) {
         res.status(500).send({
