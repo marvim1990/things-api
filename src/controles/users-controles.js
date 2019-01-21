@@ -72,7 +72,7 @@ exports.post = async(req, res, next) => {
 exports.put = async(req, res, next) => {
     try {
         const token = req.body.token || req.query.token || req.headers['access-token'];
-        const data = await auth.decodeToken(token);
+        const data = await autentification.decodeToken(token);
         if (data.id == req.params.id) {
             // update da imagem de perfil
             let picName = guid.raw().toString() + '.jpg';
