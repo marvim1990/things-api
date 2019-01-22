@@ -19,6 +19,7 @@
     "jsonwebtoken": "^8.4.0",
     "md5": "^2.2.1",
     "mongoose": "^5.3.13",
+    "npm": "^6.6.0",
     "sendgrid": "^2.0.0"
   },
   "devDependencies": {

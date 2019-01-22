@@ -77,9 +77,9 @@ exports.put = async(req, res, next) => {
             // update da imagem de perfil
             let picName = guid.raw().toString() + '.jpg';
             let pic = req.body.profilePicture;
-            let matches = pic.match(regex);
-            let type = matches[1];
-            let buffer = new Buffer(matches[2], 'base64');
+            //let matches = pic.match(regex);
+            let type = 'image/jpg';
+            let buffer = new Buffer(pic, 'base64');
 
             //azure-storage
             const azureSrv = azure.createBlobService(config.connectionAzure);
