@@ -36,9 +36,8 @@ exports.post = async(req, res, next) => {
         //imagen
         let pic = req.body.itensImages;
         let picName = guid.raw().toString() + '.jpg';
-        let matches = pic.match(regex);
-        let type = matches[1];
-        let buffer = new Buffer(matches[2], 'base64');
+        let type = 'image/jpg';
+        let buffer = new Buffer(pic, 'base64');
         
         //upload da foto
         await azureSrv.createBlockBlobFromText('itens-pictures', picName , buffer, { 

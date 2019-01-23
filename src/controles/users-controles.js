@@ -77,7 +77,6 @@ exports.put = async(req, res, next) => {
             // update da imagem de perfil
             let picName = guid.raw().toString() + '.jpg';
             let pic = req.body.profilePicture;
-            //let matches = pic.match(regex);
             let type = 'image/jpg';
             let buffer = new Buffer(pic, 'base64');
 
