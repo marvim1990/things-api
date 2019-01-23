@@ -35,6 +35,11 @@ const schema = new Schema({
         type: String,
         require: false
     },
+    delivery : {
+        type: String,
+        require: true,
+        default: 'Disponivel'
+    },
     owner: {
         type: moongose.Schema.Types.ObjectId,
         ref: 'Profiles'

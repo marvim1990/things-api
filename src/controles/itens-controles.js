@@ -21,7 +21,7 @@ exports.post = async(req, res, next) => {
     contract.isRequired(req.body.name, 'O campo nome e necessario para prosseguir');
     contract.hasMaxLen(req.body.name, 30, 'O campo nome tem um numero maximo de 30 caracteres');
     contract.hasMinLen(req.body.description, 5, 'O campo de descrição tem um tamanho minimo de 5 caracteres');
-    contract.hasMaxLen(req.body.description, 30, 'O campo de descrição tem um tamanho máximo de 30 caracteres');
+    contract.hasMaxLen(req.body.description, 80, 'O campo de descrição tem um tamanho máximo de 30 caracteres');
     if (!contract.isValid()) {
         res.status(400).send(contract.errors()).end();
         return;
@@ -59,6 +59,7 @@ exports.post = async(req, res, next) => {
             description: req.body.description,
             latitude: req.body.latitude,
             longitude: req.body.longitude,
+            delivery: req.body.delivery,
             owner: data.id
         });
         res.status(201).send({
