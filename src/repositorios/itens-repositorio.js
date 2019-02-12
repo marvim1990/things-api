@@ -15,7 +15,7 @@ exports.update = async(id, data) => {
     await Itens.findByIdAndUpdate(id, {
         $set: {
             name: data.name,
-            availability: data.availability,
+            delivery: data.delivery,
             timeCust: data.timeCust,
             description: data.description
         }
@@ -43,8 +43,14 @@ exports.getByNome = async(name) => {
     return res;
 }
 
-//busca por ID
+//busca do item por ID proprio
 exports.getById = async(id) => {
     const res = Itens.findById(id);
+    return res;
+}
+
+//busca de item por ID do proprietario
+exports.getByOwnerId = async(owerId) => {
+    const res = Itens.find({owner: owerId});
     return res;
 }

@@ -16,6 +16,9 @@ router.get('/:id', controler.getByID);
 //busca por nome e proximidade
 router.get('/name/:name', controler.getByName);
 
+//busca de item por ID do proprietario
+router.get('/owner/:id', controler.getByOwnerID);
+
 //criar customer
 router.post('/',authService.authorize, controler.post);
 

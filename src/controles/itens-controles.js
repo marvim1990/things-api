@@ -157,6 +157,7 @@ exports.getByName = async(req, res, next) => {
     }
 }
 
+// busca de item por ID proprio
 exports.getByID = async(req, res, next) => {
     try {
         var data = await repository.getById(req.params.id);
@@ -167,5 +168,19 @@ exports.getByID = async(req, res, next) => {
             status: 'Erro',
             message: 'Falha ao processar sua requisição'
         });
+    }
+}
+
+//busca de item por ID do proprietario
+exports.getByOwnerID = async(req, res, next) => {
+    try{
+        const data = await repository.getByOwnerId(req.params.id);
+        res.status(200).send({status: 'OK', data});
+    } catch (e) {
+        console.log(e);
+        res.status(500).send({
+            status:'Erro',
+            message: 'Falha ao processar sua requisição'
+        })
     }
 }
