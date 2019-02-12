@@ -175,7 +175,7 @@ exports.getByID = async(req, res, next) => {
 exports.getByOwnerID = async(req, res, next) => {
     try{
         const data = await repository.getByOwnerId(req.params.id);
-        res.status(200).send({status: 'OK', data});
+        res.status(200).send(data);
     } catch (e) {
         console.log(e);
         res.status(500).send({
