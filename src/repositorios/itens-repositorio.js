@@ -29,7 +29,7 @@ exports.delete = async(id) => {
 
 // busca aberta por proximidade e ativos
 exports.get = async() => {
-    const res = await Itens.find({ availability: true}, 'id name timeCust itensImages latitude longitude delivery owner');
+    const res = await Itens.find({ availability: true}, 'id name timeCust itensImages description latitude longitude delivery owner');
     return res;
 }
 
